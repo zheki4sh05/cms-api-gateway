@@ -2,6 +2,16 @@ server:
   port:
     8080
 
+logging:
+  level:
+    root: INFO
+    com.trustflow.cms_api_gateway: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.filter: INFO
+    org.springframework.http.server.reactive: WARN
+    org.springframework.security: INFO
+    reactor.netty: INFO
+
 spring:
   application:
     name: cms-api-gateway
@@ -14,6 +24,9 @@ spring:
           jwk-set-uri: ${app.services.auth.base-url}/oauth2/jwks
 
 app:
+  gateway:
+    logging:
+      requests-enabled: true
   services:
     auth:
       base-url: http://localhost:9091
