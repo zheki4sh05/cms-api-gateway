@@ -23,6 +23,7 @@ public class GatewayRoutesConfig {
 				)
 				.route("cms-company-info", r -> r
 						.path("/api/v1/company", "/api/v1/company/**")
+						.filters(f -> f.rewritePath("/api/v1/company(?<segment>/?.*)", "/company${segment}"))
 						.uri(companyInfoBaseUrl)
 				)
 				.build();
