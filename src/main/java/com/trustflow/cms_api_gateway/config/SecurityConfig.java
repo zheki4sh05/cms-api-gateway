@@ -1,5 +1,8 @@
 package com.trustflow.cms_api_gateway.config;
 
+import java.util.List;
+
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,22 +13,28 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.server.resource.web.server.authentication.ServerBearerTokenAuthenticationConverter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
 @Configuration
 @EnableWebFluxSecurity
+@EnableConfigurationProperties(AppCorsProperties.class)
 public class SecurityConfig {
 
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(
 			ServerHttpSecurity http,
 			ReactiveAuthenticationManager jwtReactiveAuthenticationManager,
-			ServerAuthenticationEntryPoint tokenExpiredAwareAuthenticationEntryPoint
+			ServerAuthenticationEntryPoint tokenExpiredAwareAuthenticationEntryPoint,
+			CorsConfigurationSource corsConfigurationSource
 	) {
 		return http
 				.csrf(ServerHttpSecurity.CsrfSpec::disable)
+				.cors(cors -> cors.configurationSource(corsConfigurationSource))
 				.authorizeExchange(exchanges -> exchanges
 						.pathMatchers("/actuator/health").permitAll()
 						.pathMatchers("/auth/**").permitAll()
@@ -38,6 +47,23 @@ public class SecurityConfig {
 						.jwt(jwt -> jwt.authenticationManager(jwtReactiveAuthenticationManager))
 				)
 				.build();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource(
+			AppCorsProperties corsProperties
+	) {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOrigins(corsProperties.allowedOrigins());
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+		config.setAllowedHeaders(List.of("*"));
+		config.setExposedHeaders(List.of("X-Request-Id"));
+		config.setAllowCredentials(true);
+		config.setMaxAge(3600L);
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return source;
 	}
 
 	private Mono<org.springframework.security.core.Authentication> convertBearerTokenUnlessAuthPath(

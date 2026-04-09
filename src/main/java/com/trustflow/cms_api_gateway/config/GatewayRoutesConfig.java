@@ -18,6 +18,7 @@ public class GatewayRoutesConfig {
 		return builder.routes()
 				.route("auth-login-and-registration", r -> r
 						.path("/auth/**")
+						.filters(f -> f.removeRequestHeader("Authorization"))
 						.uri(authBaseUrl)
 				)
 				.route("cms-company-info", r -> r
