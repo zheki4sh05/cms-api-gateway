@@ -17,12 +17,7 @@ public class GatewayRoutesConfig {
 	) {
 		return builder.routes()
 				.route("auth-login-and-registration", r -> r
-						.path(
-								"/auth/login",
-								"/auth/login/**",
-								"/auth/registration",
-								"/auth/registration/**"
-						)
+						.path("/auth/**")
 						.uri(authBaseUrl)
 				)
 				.route("cms-company-info", r -> r
