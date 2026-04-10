@@ -36,6 +36,11 @@ public class GatewayRoutesConfig {
 						.filters(f -> f.rewritePath("/api/v1/departments(?<segment>/?.*)", "/departments${segment}"))
 						.uri(companyInfoBaseUrl)
 				)
+				.route("cms-company-info-invitations-send", r -> r
+						.path("/api/v1/invitations/send", "/api/v1/invitations/send/**")
+						.filters(f -> f.rewritePath("/api/v1/invitations/send(?<segment>/?.*)", "/invitations/send${segment}"))
+						.uri(companyInfoBaseUrl)
+				)
 				.build();
 	}
 }
