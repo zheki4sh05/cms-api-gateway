@@ -37,6 +37,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configurationSource(corsConfigurationSource))
 				.authorizeExchange(exchanges -> exchanges
 						.pathMatchers("/actuator/health").permitAll()
+						.pathMatchers("/api/auth/**").permitAll()
 						.pathMatchers("/auth/**").permitAll()
 						.pathMatchers(HttpMethod.OPTIONS).permitAll()
 						.anyExchange().authenticated()
@@ -70,7 +71,10 @@ public class SecurityConfig {
 			ServerWebExchange exchange
 	) {
 		String path = exchange.getRequest().getPath().pathWithinApplication().value();
-		if ("/auth".equals(path) || path.startsWith("/auth/")) {
+		if (
+				"/auth".equals(path) || path.startsWith("/auth/")
+						|| "/api/auth".equals(path) || path.startsWith("/api/auth/")
+		) {
 			return Mono.empty();
 		}
 		ServerBearerTokenAuthenticationConverter delegate = new ServerBearerTokenAuthenticationConverter();

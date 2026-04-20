@@ -13,9 +13,28 @@ public class GatewayRoutesConfig {
 	public RouteLocator customRouteLocator(
 			RouteLocatorBuilder builder,
 			@Value("${app.services.auth.base-url}") String authBaseUrl,
-			@Value("${app.services.company-info.base-url}") String companyInfoBaseUrl
+			@Value("${app.services.company-info.base-url}") String companyInfoBaseUrl,
+			@Value("${app.services.monitoring.base-url}") String monitoringBaseUrl,
+			@Value("${app.services.risk.base-url}") String riskBaseUrl
 	) {
 		return builder.routes()
+				.route("auth-user-me", r -> r
+						.path("/api/me", "/api/me/**")
+						.filters(f -> f.rewritePath("/api/me(?<segment>/?.*)", "/api/users/me${segment}"))
+						.uri(authBaseUrl)
+				)
+				.route("auth-users", r -> r
+						.path("/api/users", "/api/users/**")
+						.uri(authBaseUrl)
+				)
+				.route("auth-api-prefix", r -> r
+						.path("/api/auth/**")
+						.filters(f -> f
+								.removeRequestHeader("Authorization")
+								.rewritePath("/api/auth(?<segment>/?.*)", "/auth${segment}")
+						)
+						.uri(authBaseUrl)
+				)
 				.route("auth-login-and-registration", r -> r
 						.path("/auth/**")
 						.filters(f -> f.removeRequestHeader("Authorization"))
@@ -40,6 +59,36 @@ public class GatewayRoutesConfig {
 						.path("/api/v1/invitations/send", "/api/v1/invitations/send/**")
 						.filters(f -> f.rewritePath("/api/v1/invitations/send(?<segment>/?.*)", "/invitations/send${segment}"))
 						.uri(companyInfoBaseUrl)
+				)
+				.route("monitoring-risk-objects", r -> r
+						.path("/api/risk-objects", "/api/risk-objects/**")
+						.uri(monitoringBaseUrl)
+				)
+				.route("monitoring-integration-configs-change-history", r -> r
+						.path("/api/integration-configs/change-history", "/api/integration-configs/change-history/**")
+						.uri(monitoringBaseUrl)
+				)
+				.route("monitoring-integration-configs", r -> r
+						.path("/api/integration-configs", "/api/integration-configs/**")
+						.uri(monitoringBaseUrl)
+				)
+				.route("monitoring-risk-object-model-by-id", r -> r
+						.path("/api/risk-object-models/*")
+						.filters(f -> f.rewritePath("/api/risk-object-models/(?<id>[^/]+)", "/api/risk-objects/${id}"))
+						.uri(monitoringBaseUrl)
+				)
+				.route("monitoring-risk-object-models", r -> r
+						.path("/api/risk-object-models", "/api/risk-object-models/**")
+						.uri(monitoringBaseUrl)
+				)
+				.route("cms-risk-rules", r -> r
+						.path("/api/risks", "/api/risks/**")
+						.filters(f -> f.rewritePath("/api/risks(?<segment>/?.*)", "/api/rules${segment}"))
+						.uri(riskBaseUrl)
+				)
+				.route("cms-risk-categories", r -> r
+						.path("/api/risk-categories", "/api/risk-categories/**")
+						.uri(riskBaseUrl)
 				)
 				.build();
 	}

@@ -25,12 +25,18 @@ spring:
 app:
   cors:
     allowed-origins:
-      - http://localhost:3000
+      - http://localhost:3000,
+      - http://localhost:5173
   gateway:
     logging:
       requests-enabled: true
   services:
+
     auth:
       base-url: http://localhost:9091
     company-info:
       base-url: http://localhost:9092
+    monitoring:
+      base-url: http://localhost:9093
+    risk:
+      base-url: http://localhost:9094
