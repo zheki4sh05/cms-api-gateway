@@ -86,6 +86,14 @@ public class GatewayRoutesConfig {
 						.filters(f -> f.rewritePath("/api/risks(?<segment>/?.*)", "/api/rules${segment}"))
 						.uri(riskBaseUrl)
 				)
+				.route("cms-risk-rules-direct", r -> r
+						.path("/api/rules", "/api/rules/**")
+						.uri(riskBaseUrl)
+				)
+				.route("cms-risk-rules-change-history", r -> r
+						.path("/api/rules/change-history", "/api/rules/change-history/**")
+						.uri(riskBaseUrl)
+				)
 				.route("cms-risk-categories", r -> r
 						.path("/api/risk-categories", "/api/risk-categories/**")
 						.uri(riskBaseUrl)

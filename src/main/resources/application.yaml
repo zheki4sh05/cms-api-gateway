@@ -3,13 +3,13 @@ server:
 
 logging:
   level:
-    root: INFO
-    com.trustflow.cms_api_gateway: INFO
-    org.springframework.cloud.gateway: INFO
-    org.springframework.cloud.gateway.filter: INFO
+    root: DEBUG
+    com.trustflow.cms_api_gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway.filter: DEBUG
     org.springframework.http.server.reactive: WARN
-    org.springframework.security: INFO
-    reactor.netty: INFO
+    org.springframework.security: DEBUG
+    reactor.netty: DEBUG
 
 spring:
   application:
