@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class GatewayRoutesConfig {
@@ -84,6 +85,12 @@ public class GatewayRoutesConfig {
 				.route("cms-risk-rules", r -> r
 						.path("/api/risks", "/api/risks/**")
 						.filters(f -> f.rewritePath("/api/risks(?<segment>/?.*)", "/api/rules${segment}"))
+						.uri(riskBaseUrl)
+				)
+				.route("cms-risk-rule-risk-object-put", r -> r
+						.method(HttpMethod.PUT)
+						.and()
+						.path("/api/rules/*/risk-object")
 						.uri(riskBaseUrl)
 				)
 				.route("cms-risk-rules-direct", r -> r
