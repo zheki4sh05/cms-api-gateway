@@ -16,7 +16,8 @@ public class GatewayRoutesConfig {
 			@Value("${app.services.auth.base-url}") String authBaseUrl,
 			@Value("${app.services.company-info.base-url}") String companyInfoBaseUrl,
 			@Value("${app.services.monitoring.base-url}") String monitoringBaseUrl,
-			@Value("${app.services.risk.base-url}") String riskBaseUrl
+			@Value("${app.services.risk.base-url}") String riskBaseUrl,
+			@Value("${app.services.workflow.base-url}") String workflowBaseUrl
 	) {
 		return builder.routes()
 				.route("auth-user-me", r -> r
@@ -104,6 +105,11 @@ public class GatewayRoutesConfig {
 				.route("cms-risk-categories", r -> r
 						.path("/api/risk-categories", "/api/risk-categories/**")
 						.uri(riskBaseUrl)
+				)
+				.route("cms-workflow-incidents-my", r -> r
+						.path("/api/v1/incidents/my", "/api/v1/incidents/my/**")
+						.filters(f -> f.rewritePath("/api/v1/incidents/my(?<segment>/?.*)", "/api/incidents/my${segment}"))
+						.uri(workflowBaseUrl)
 				)
 				.build();
 	}

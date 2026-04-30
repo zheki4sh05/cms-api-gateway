@@ -40,3 +40,5 @@ app:
       base-url: http://localhost:9093
     risk:
       base-url: http://localhost:9094
+    workflow:
+      base-url: http://localhost:9095
