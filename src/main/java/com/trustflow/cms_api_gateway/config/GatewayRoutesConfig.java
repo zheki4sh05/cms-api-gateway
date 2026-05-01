@@ -111,6 +111,30 @@ public class GatewayRoutesConfig {
 						.filters(f -> f.rewritePath("/api/v1/incidents/my(?<segment>/?.*)", "/api/incidents/my${segment}"))
 						.uri(workflowBaseUrl)
 				)
+				.route("cms-workflow-incident-view", r -> r
+						.path("/api/incidents/*/view")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-incident-assign-to-me", r -> r
+						.path("/api/incidents/*/assign-to-me")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-cases-my", r -> r
+						.path("/api/v1/cases/my", "/api/v1/cases/my/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-cases-view", r -> r
+						.path("/api/v1/cases/view", "/api/v1/cases/view/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-view-by-id", r -> r
+						.path("/api/v1/cases/*/view", "/api/v1/cases/*/view/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-investigation", r -> r
+						.path("/api/cases/*/investigation", "/api/cases/*/investigation/**")
+						.uri(workflowBaseUrl)
+				)
 				.build();
 	}
 }
