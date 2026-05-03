@@ -106,6 +106,15 @@ public class GatewayRoutesConfig {
 						.path("/api/risk-categories", "/api/risk-categories/**")
 						.uri(riskBaseUrl)
 				)
+				.route("cms-workflow-action-plans", r -> r
+						.path("/api/action-plans", "/api/action-plans/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-action-plans-v1", r -> r
+						.path("/api/v1/action-plans", "/api/v1/action-plans/**")
+						.filters(f -> f.rewritePath("/api/v1/action-plans(?<segment>/?.*)", "/api/action-plans${segment}"))
+						.uri(workflowBaseUrl)
+				)
 				.route("cms-workflow-incidents-my", r -> r
 						.path("/api/v1/incidents/my", "/api/v1/incidents/my/**")
 						.filters(f -> f.rewritePath("/api/v1/incidents/my(?<segment>/?.*)", "/api/incidents/my${segment}"))
@@ -131,8 +140,36 @@ public class GatewayRoutesConfig {
 						.path("/api/v1/cases/*/view", "/api/v1/cases/*/view/**")
 						.uri(workflowBaseUrl)
 				)
+				.route("cms-workflow-case-comments-v1", r -> r
+						.path("/api/v1/cases/*/comments", "/api/v1/cases/*/comments/**")
+						.filters(f -> f.rewritePath(
+								"/api/v1/cases/(?<caseId>[^/]+)/comments(?<segment>/?.*)",
+								"/api/cases/${caseId}/comments${segment}"
+						))
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-attachments-v1", r -> r
+						.path("/api/v1/cases/*/attachments", "/api/v1/cases/*/attachments/**")
+						.filters(f -> f.rewritePath(
+								"/api/v1/cases/(?<caseId>[^/]+)/attachments(?<segment>/?.*)",
+								"/api/cases/${caseId}/attachments${segment}"
+						))
+						.uri(workflowBaseUrl)
+				)
 				.route("cms-workflow-case-investigation", r -> r
 						.path("/api/cases/*/investigation", "/api/cases/*/investigation/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-comments", r -> r
+						.path("/api/cases/*/comments", "/api/cases/*/comments/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-attachment-download", r -> r
+						.path("/api/cases/*/attachments/*/download", "/api/cases/*/attachments/*/download/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-case-attachment-by-id", r -> r
+						.path("/api/cases/*/attachments/*")
 						.uri(workflowBaseUrl)
 				)
 				.build();
