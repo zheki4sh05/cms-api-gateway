@@ -128,6 +128,16 @@ public class GatewayRoutesConfig {
 						.path("/api/incidents/reports", "/api/incidents/reports/**")
 						.uri(workflowBaseUrl)
 				)
+				.route("cms-workflow-tasks-my-v1", r -> r
+						.path("/api/v1/tasks/my", "/api/v1/tasks/my/**")
+						.filters(f -> f.rewritePath("/api/v1/tasks/my(?<segment>/?.*)", "/api/tasks/my${segment}"))
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-task-by-id-v1", r -> r
+						.path("/api/v1/tasks/*", "/api/v1/tasks/*/**")
+						.filters(f -> f.rewritePath("/api/v1/tasks/(?<taskId>[^/]+)(?<segment>/?.*)", "/api/tasks/${taskId}${segment}"))
+						.uri(workflowBaseUrl)
+				)
 				.route("cms-workflow-incident-view", r -> r
 						.path("/api/incidents/*/view")
 						.uri(workflowBaseUrl)
