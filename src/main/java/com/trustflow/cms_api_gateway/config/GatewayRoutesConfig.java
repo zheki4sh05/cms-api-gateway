@@ -88,6 +88,11 @@ public class GatewayRoutesConfig {
 						.filters(f -> f.rewritePath("/api/risks(?<segment>/?.*)", "/api/rules${segment}"))
 						.uri(riskBaseUrl)
 				)
+				.route("cms-risk-rules-v1", r -> r
+						.path("/api/v1/rules", "/api/v1/rules/**")
+						.filters(f -> f.rewritePath("/api/v1/rules(?<segment>/?.*)", "/api/rules${segment}"))
+						.uri(riskBaseUrl)
+				)
 				.route("cms-risk-rule-risk-object-put", r -> r
 						.method(HttpMethod.PUT)
 						.and()
@@ -124,6 +129,12 @@ public class GatewayRoutesConfig {
 						.path("/api/incidents/my", "/api/incidents/my/**")
 						.uri(workflowBaseUrl)
 				)
+				.route("cms-workflow-incidents-my-stats", r -> r
+						.method(HttpMethod.GET)
+						.and()
+						.path("/api/incidents/my/stats", "/api/incidents/my/stats/**")
+						.uri(workflowBaseUrl)
+				)
 				.route("cms-workflow-incidents-reports", r -> r
 						.path("/api/incidents/reports", "/api/incidents/reports/**")
 						.uri(workflowBaseUrl)
@@ -144,6 +155,12 @@ public class GatewayRoutesConfig {
 				)
 				.route("cms-workflow-incident-assign-to-me", r -> r
 						.path("/api/incidents/*/assign-to-me")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-cases-my-stats-v1", r -> r
+						.method(HttpMethod.GET)
+						.and()
+						.path("/api/v1/cases/my/stats", "/api/v1/cases/my/stats/**")
 						.uri(workflowBaseUrl)
 				)
 				.route("cms-workflow-cases-my", r -> r
