@@ -128,6 +128,10 @@ public class GatewayRoutesConfig {
 						.filters(f -> f.rewritePath("/api/v1/action-plans(?<segment>/?.*)", "/api/action-plans${segment}"))
 						.uri(workflowBaseUrl)
 				)
+				.route("cms-workflow-supervisor-verification-pending", r -> r
+						.path("/api/supervisor/verification/pending", "/api/supervisor/verification/pending/**")
+						.uri(workflowBaseUrl)
+				)
 				.route("cms-workflow-incidents-my", r -> r
 						.path("/api/v1/incidents/my", "/api/v1/incidents/my/**")
 						.filters(f -> f.rewritePath("/api/v1/incidents/my(?<segment>/?.*)", "/api/incidents/my${segment}"))
@@ -145,6 +149,18 @@ public class GatewayRoutesConfig {
 				)
 				.route("cms-workflow-incidents-reports", r -> r
 						.path("/api/incidents/reports", "/api/incidents/reports/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-incidents-kpi-managers", r -> r
+						.path("/api/incidents/kpi/managers", "/api/incidents/kpi/managers/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-incidents-problem-areas", r -> r
+						.path("/api/incidents/problem-areas", "/api/incidents/problem-areas/**")
+						.uri(workflowBaseUrl)
+				)
+				.route("cms-workflow-incidents-overview", r -> r
+						.path("/api/incidents/overview", "/api/incidents/overview/**")
 						.uri(workflowBaseUrl)
 				)
 				.route("cms-workflow-tasks-my-v1", r -> r
