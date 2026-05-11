@@ -91,6 +91,10 @@ public class GatewayRoutesConfig {
 						.path("/api/risk-object-models", "/api/risk-object-models/**")
 						.uri(monitoringBaseUrl)
 				)
+				.route("monitoring-results-statistics", r -> r
+						.path("/api/monitoring-results/statistics", "/api/monitoring-results/statistics/**")
+						.uri(monitoringBaseUrl)
+				)
 				.route("cms-risk-rules", r -> r
 						.path("/api/risks", "/api/risks/**")
 						.filters(f -> f.rewritePath("/api/risks(?<segment>/?.*)", "/api/rules${segment}"))
