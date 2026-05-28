@@ -1,0 +1,20 @@
+logging:
+  level:
+    root: INFO
+    com.trustflow.cms_api_gateway: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework.security: INFO
+    reactor.netty: WARN
+
+app:
+  services:
+    auth:
+      base-url: ${APP_SERVICES_AUTH_BASE_URL:http://host.docker.internal:9091}
+    company-info:
+      base-url: ${APP_SERVICES_COMPANY_INFO_BASE_URL:http://host.docker.internal:9092}
+    monitoring:
+      base-url: ${APP_SERVICES_MONITORING_BASE_URL:http://host.docker.internal:9093}
+    risk:
+      base-url: ${APP_SERVICES_RISK_BASE_URL:http://host.docker.internal:9094}
+    workflow:
+      base-url: ${APP_SERVICES_WORKFLOW_BASE_URL:http://host.docker.internal:9095}
